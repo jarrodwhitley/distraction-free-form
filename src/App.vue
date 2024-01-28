@@ -25,99 +25,124 @@ export default {
                     {
                         label: 'Email',
                         id: 'email',
-                        type: 'email'
+                        type: 'email',
+                        value: '',
+                        required: true
                     },
                     {
                         label: 'Would you be interested attending a Donut event?',
                         id: 'eventInterest',
                         type: 'radio',
-                        options: ['Yes', 'No']
+                        options: ['Yes', 'No'],
+                        value: '',
+                        required: false
                     },
                     {
-                        label: 'Last Name',
-                        id: 'lname',
-                        type: 'text'
+                        label: 'What state are you from?',
+                        id: 'state',
+                        type: 'text',
+                        value: '',
+                        required: false
                     },
                     {
                         label: 'What is your favorite color?',
                         id: 'color',
-                        type: 'text'
+                        type: 'text',
+                        value: '',
+                        required: false
                     },
                     {
-                      label: 'What is your favorite kind of Donut video?',
-                      id: 'favoriteVideo',
-                      type: 'select',
-                      options: [
-                        {
-                            label: 'Up to Speed',
-                            value: 'uts'
-                        },
-                        {
-                            label: 'Bumper 2 Bumper',
-                            value: 'b2b'
-                        },
-                        {
-                            label: 'WheelHouse',
-                            value: 'wh'
-                        },
-                        {
-                            label: 'Money Pit',
-                            value: 'mp'
-                        },
-                        {
-                            label: 'Science Garage',
-                            value: 'sg'
-                        },
-                        {
-                            label: 'Hi Low',
-                            value: 'hl'
-                        },
-                        {
-                            label: 'D-List',
-                            value: 'dl'
-                        },
-                        {
-                            label: 'Donut Podcast',
-                            value: 'dp'
-                        },
-                        {
-                            label: 'Donut News',
-                            value: 'dn'
-                        },
-                        {
-                            label: 'Donut Shop',
-                            value: 'ds'
-                        },
-                        {
-                            label: 'Donut Underground',
-                            value: 'du'
-                        }
-                      ]
+                        label: 'What is your favorite kind of Donut video?',
+                        id: 'favoriteVideo',
+                        type: 'select',
+                        value: '',
+                        options: [
+                            {
+                                label: 'Select an Option',
+                                value: ''
+                            },
+                            {
+                                label: 'Up to Speed',
+                                value: 'uts'
+                            },
+                            {
+                                label: 'Bumper 2 Bumper',
+                                value: 'b2b'
+                            },
+                            {
+                                label: 'WheelHouse',
+                                value: 'wh'
+                            },
+                            {
+                                label: 'Money Pit',
+                                value: 'mp'
+                            },
+                            {
+                                label: 'Science Garage',
+                                value: 'sg'
+                            },
+                            {
+                                label: 'Hi Low',
+                                value: 'hl'
+                            },
+                            {
+                                label: 'D-List',
+                                value: 'dl'
+                            },
+                            {
+                                label: 'Donut Podcast',
+                                value: 'dp'
+                            },
+                            {
+                                label: 'Donut News',
+                                value: 'dn'
+                            },
+                            {
+                                label: 'Donut Shop',
+                                value: 'ds'
+                            },
+                            {
+                                label: 'Donut Underground',
+                                value: 'du'
+                            }
+                        ],
+                        required: false
                     },
                     {
                         label: 'Do you enjoy clicking on buttons?',
                         id: 'buttonPreference',
                         type: 'checkbox',
+                        value: '',
+                        required: false
                     },
                     {
                         label: 'What is your birthday?',
                         id: 'birthday',
                         type: 'datepicker',
+                        value: '',
+                        required: false
                     },
                     {
                         label: 'What is your favorite car?',
                         id: 'favoriteCar',
-                        type: 'text'
+                        type: 'text',
+                        value: '',
+                        required: false
                     },
                     {
                         label: 'How often to you watch Donut?',
                         id: 'watchFrequency',
                         type: 'radio',
+                        value: '',
+                        options: ['Daily', 'Almost Daily', 'Weekly', 'Monthly'],
+                        required: false
                     },
                     {
                         label: 'Did you know that Donut has a store?',
                         id: 'storeKnowledge',
                         type: 'radio',
+                        value: '',
+                        required: false
                     }
 
                 ],

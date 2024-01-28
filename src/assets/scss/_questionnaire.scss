@@ -61,13 +61,16 @@ html, body {
         &__field {
 
             label {
-                @apply w-full;
 
                 input {
                     @apply text-4xl;
 
                     &:focus {
                         outline: none;
+                    }
+
+                    &:checked + span {
+                        @apply bg-green-600;
                     }
                 }
 

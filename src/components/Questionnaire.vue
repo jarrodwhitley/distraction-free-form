@@ -23,20 +23,20 @@
             <div class="questionnaire__form__field flex flex-col items-start caret-slate-800 justify-center h-screen px-10 w-full md:max-w-screen-md row-start-1 col-start-1 gap-5"
                  :class="animationClass(index)"
                  v-for="(field, index) in data.fields">
-                <label class="flex flex-col text-2xl text-slate-800 gap-5" :for="field.id">{{ field.label }}
-                    <input v-if="field.type === 'text'" :type="field.type" :id="field.id" placeholder="Type here..." class="questionnaire__form__field--input bg-white pb-2 border-b-2 capitalize"/>
-                    <input v-if="field.type === 'email'" :type="field.type" :id="field.id" placeholder="Type here..." class="questionnaire__form__field--email bg-white pb-2 border-b-2"/>
+                <label class="flex flex-col text-2xl text-slate-800 gap-5 w-full" :for="field.id">{{ field.label }}
+                    <input v-if="field.type === 'text'" :type="field.type" :id="field.id" placeholder="Type here..." v-model="field.value" class="questionnaire__form__field--input bg-white pb-2 border-b-2 capitalize"/>
+                    <input v-if="field.type === 'email'" :type="field.type" :id="field.id" placeholder="Type here..." v-model="field.value" class="questionnaire__form__field--email bg-white pb-2 border-b-2"/>
                     <select v-if="field.type === 'select'" :id="field.id" class="questionnaire__form__field--select text-xl py-2 px-1 bg-slate-100 cursor-pointer">
-                        <option selected disabled>Select an option</option>
-                        <option class="text-base" v-for="option in field.options" :value="option.value" v-text="option.label"></option>
+<!--                        <option class="text-base text-slate-500" selected disabled hidden>Select an Option</option>-->
+                        <option class="text-base" v-for="(option, index) in field.options" :disabled="index === 0" :value="option.value" v-text="option.label"></option>
                     </select>
-                    <span v-if="field.type === 'radio'" class="questionnaire__form__field--radio" v-for="option in field.options">
-                        <label :for="field.id" class="text-base flex flex-row items-center justify-start gap-2">{{ option }}
-                            <input class="opacity-0 pointer-events-none" :value="option" :name="field.id" :type="field.type" :id="field.id"/>
+                    <span v-if="field.type === 'radio'" class="questionnaire__form__field--radio flex flex-row justify-start items-start py-5">
+                        <label v-for="option in field.options" :for="option" class="text-base w-1/6 flex flex-row items-center justify-start cursor-pointer gap-2">{{ option }}
+                            <input class="hidden pointer-events-none" :value="option" v-model="field.value" :name="field.id" :type="field.type" :id="option"/>
                             <span class="questionnaire__form__field--radio__checkmark rounded-full bg-slate-200 h-5 w-5"></span>
                         </label>
                     </span>
-                    <input v-if="field.type === 'checkbox'" :type="field.type" :id="field.id" class="questionnaire__form__field--checkbox bg-white border-b-2"/>
+                    <input v-if="field.type === 'checkbox'" :type="field.type" :id="field.id" v-model="field.value" class="questionnaire__form__field--checkbox bg-white border-b-2"/>
                 </label>
                 <div class="flex flex-row items-center gap-2">
                     <div v-if="index !== data.fields.length - 1" class="questionnaire__form__field__next-btn btn-secondary" @click="nextField">Next</div>
@@ -74,13 +74,17 @@ export default {
         });
         window.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
-                this.nextField();
+                if (!this.formBegin) {
+                    this.launchForm();
+                } else {
+                    this.nextField();
+                }
             }
         });
         // listen for the focus event and console.log the focused element
-        window.addEventListener('focus', (event) => {
-            console.log(event.target);
-        }, true);
+        // window.addEventListener('click', (event) => {
+        //     console.log(event.target);
+        // }, true);
     },
     data() {
         return {
