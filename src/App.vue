@@ -15,9 +15,10 @@ export default {
             clientData: {
                 name: 'Donut',
                 logo: 'https://donut.media/cdn/shop/files/DONM-0114_StoreRetheme_SiteExp_Logo-01_x300.png?v=1670446627',
+                copyright: 'Donut Media © 2024',
                 background: 'https://donut.media/cdn/shop/files/jan_web_header.png?v=1705685702',
                 intro: {
-                    title: 'Welcome to Donut!',
+                    title: 'Welcome to the Donut Poll!',
                     text: 'Firstly, thank you for taking the time to fill out this questionnaire. Your answers here will help us to craft our future content to your liking. As you already know, we love everything involving cars, but what you may not know is how much we love our fans! Getting to know the people who have made our channel a success has been a great joy. Thank you again for your time, we look forward to hearing from you!',
                     ctaText: 'Start'
                 },
