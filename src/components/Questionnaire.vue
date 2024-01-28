@@ -26,8 +26,7 @@
                 <label class="flex flex-col text-2xl text-slate-800 gap-5 w-full" :for="field.id">{{ field.label }}
                     <input v-if="field.type === 'text'" :type="field.type" :id="field.id" placeholder="Type here..." v-model="field.value" class="questionnaire__form__field--input bg-white pb-2 border-b-2 capitalize"/>
                     <input v-if="field.type === 'email'" :type="field.type" :id="field.id" placeholder="Type here..." v-model="field.value" class="questionnaire__form__field--email bg-white pb-2 border-b-2"/>
-                    <select v-if="field.type === 'select'" :id="field.id" class="questionnaire__form__field--select text-xl py-2 px-1 bg-slate-100 cursor-pointer">
-<!--                        <option class="text-base text-slate-500" selected disabled hidden>Select an Option</option>-->
+                    <select v-if="field.type === 'select'" :id="field.id" v-model="field.value" class="questionnaire__form__field--select text-xl py-2 px-1 bg-slate-100 cursor-pointer">
                         <option class="text-base" v-for="(option, index) in field.options" :disabled="index === 0" :value="option.value" v-text="option.label"></option>
                     </select>
                     <span v-if="field.type === 'radio'" class="questionnaire__form__field--radio flex flex-row justify-start items-start py-5">
