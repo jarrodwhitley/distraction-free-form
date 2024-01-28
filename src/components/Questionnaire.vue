@@ -36,6 +36,12 @@
                         </label>
                     </span>
                     <input v-if="field.type === 'checkbox'" :type="field.type" :id="field.id" v-model="field.value" class="questionnaire__form__field--checkbox bg-white border-b-2"/>
+                    <VueDatePicker class="questionnaire__datepicker"
+                                   v-if="field.type === 'datepicker'"
+                                   v-model="field.value"
+                                   @open="datePickerOpen = true"
+                                   @closed="datePickerOpen = false"
+                                   :enable-time-picker="false"></VueDatePicker>
                 </label>
                 <div class="flex flex-row items-center gap-2">
                     <div v-if="index !== data.fields.length - 1" class="questionnaire__form__field__next-btn btn-secondary" @click="nextField">Next</div>
@@ -65,6 +71,7 @@ export default {
     },
     mounted() {
         window.addEventListener('wheel', (e) => {
+            if (this.datePickerOpen) return false;
             if (this.scrollAnimationComplete && this.formBegin && e.deltaY > 0) {
                 this.nextField();
             } else {
@@ -80,10 +87,6 @@ export default {
                 }
             }
         });
-        // listen for the focus event and console.log the focused element
-        // window.addEventListener('click', (event) => {
-        //     console.log(event.target);
-        // }, true);
     },
     data() {
         return {
@@ -93,7 +96,8 @@ export default {
             userInteraction: false,
             scrollDirection: '',
             formScrollInitiated: false,
-            scrollAnimationComplete: true
+            scrollAnimationComplete: true,
+            datePickerOpen: false
         }
     },
     methods: {

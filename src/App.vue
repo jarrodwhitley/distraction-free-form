@@ -30,6 +30,13 @@ export default {
                         required: true
                     },
                     {
+                        label: 'What is your birthday?',
+                        id: 'birthday',
+                        type: 'datepicker',
+                        value: '',
+                        required: false
+                    },
+                    {
                         label: 'Would you be interested attending a Donut event?',
                         id: 'eventInterest',
                         type: 'radio',
@@ -112,13 +119,6 @@ export default {
                         label: 'Do you enjoy clicking on buttons?',
                         id: 'buttonPreference',
                         type: 'checkbox',
-                        value: '',
-                        required: false
-                    },
-                    {
-                        label: 'What is your birthday?',
-                        id: 'birthday',
-                        type: 'datepicker',
                         value: '',
                         required: false
                     },
