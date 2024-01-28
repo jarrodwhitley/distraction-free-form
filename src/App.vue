@@ -23,19 +23,20 @@ export default {
                 },
                 fields: [
                     {
-                        label: 'First Name',
-                        id: 'fname',
-                        type: 'text'
+                        label: 'Email',
+                        id: 'email',
+                        type: 'email'
+                    },
+                    {
+                        label: 'Would you be interested attending a Donut event?',
+                        id: 'eventInterest',
+                        type: 'radio',
+                        options: ['Yes', 'No']
                     },
                     {
                         label: 'Last Name',
                         id: 'lname',
                         type: 'text'
-                    },
-                    {
-                        label: 'Email',
-                        id: 'email',
-                        type: 'email'
                     },
                     {
                         label: 'What is your favorite color?',

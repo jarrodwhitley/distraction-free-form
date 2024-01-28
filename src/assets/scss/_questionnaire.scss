@@ -19,7 +19,6 @@ html, body {
         @apply bg-slate-800 hover:bg-slate-900;
     }
 
-
     &__header {
         width: 100%;
         height: 5rem;
@@ -60,21 +59,30 @@ html, body {
     &__form {
 
         &__field {
-            //max-width: 40vw;
 
             label {
                 @apply w-full;
 
-                input, select {
+                input {
                     @apply text-4xl;
-                }
-            }
 
-            input {
-                &:focus {
-                    outline: none;
+                    &:focus {
+                        outline: none;
+                    }
+                }
+
+                select {
+                    &:focus {
+                        outline: none;
+                    }
                 }
             }
+        }
+    }
+
+    &__nav-arrows {
+        &__arrow {
+            transition: all 0.5s;
         }
     }
 }
