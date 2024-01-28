@@ -1,41 +1,87 @@
 <template>
-    <div class="questionnaire overflow-hidden relative">
+    <div class="questionnaire overflow-hidden relative dark:bg-slate-800">
         <div class="questionnaire__header flex flex-col" :style="'background-color:' + data.primaryColor">
             <img class="questionnaire__header__logo h-full w-auto" :src="data.logo" alt="client logo"/>
+            <div class="dark-mode-slide-toggle absolute right-2 cursor-pointer">
+                <label for="darkmode">
+                    <input type="checkbox" id="darkmode" v-model="darkMode" class="hidden"/>
+                    <div class="toggle-bg flex justify-evenly items-center bg-gray-600 rounded-2xl w-14 h-7 relative" :class="{ 'dark' : darkMode }">
+                        <i class="fas fa-sun text-gray-400"></i>
+                        <i class="fas fa-moon text-gray-400"></i>
+                    </div>
+                </label>
+            </div>
             <div class="questionnaire__progress w-screen bg-slate-100" :class="{ 'opacity-0' : !formBegin }">
-                <div class="questionnaire__progress__bar h-1 bg-slate-800" :style="'width:' + ((currentField + 1) / data.fields.length) * 100 + '%'"></div>
+                <div class="questionnaire__progress__bar h-1 bg-slate-800 dark:bg-green-400" :style="'width:' + ((currentField + 1) / data.fields.length) * 100 + '%'"></div>
             </div>
         </div>
         <Transition name="questionnaire__intro__transition" tag="div">
             <div class="questionnaire__intro h-screen w-auto flex flex-col md:grid grid-rows-2 md:grid-rows-1 grid-cols-2 justify-center items-center z-10 gap-5" v-show="!formBegin">
                 <img class="questionnaire__intro__image z-0 object-cover pointer-events-none h-1/4 md:h-full row-start-1 col-span-full md:col-span-1 md:col-start-1" :src="data.background" alt="client background"/>
                 <div class="flex flex-col w-full px-10 md:pl-10 md:pr-28 gap-10 row-start-2 md:row-start-1 col-span-full md:col-span-1 md:col-start-2">
-                    <h1 class="questionnaire__intro__title text-5xl md:text-6xl font-bold" v-text="data.intro.title"></h1>
-                    <p class="questionnaire__intro__text leading-7" v-text="data.intro.text"></p>
+                    <h1 class="questionnaire__intro__title text-5xl md:text-6xl font-bold dark:text-white" v-text="data.intro.title"></h1>
+                    <p class="questionnaire__intro__text leading-7 dark:text-white" v-text="data.intro.text"></p>
                     <div class="flex flex-row items-center gap-2">
                         <button class="questionnaire__intro__cta btn-primary" v-text="data.intro.ctaText" @click="launchForm"></button>
-                        <div class="text-slate-800 text-xs">press <strong>Enter ↵</strong></div>
+                        <div class="text-slate-800 dark:text-white text-xs">press <strong>Enter ↵</strong></div>
                     </div>
                 </div>
             </div>
         </Transition>
-        <form class="questionnaire__form grid grid-cols-1 grid-rows-1 items-center justify-items-center z-10" v-show="formBegin">
-            <div class="questionnaire__form__field flex flex-col items-start caret-slate-800 justify-center h-screen px-10 w-full md:max-w-screen-md row-start-1 col-start-1 gap-5"
+        <form class="questionnaire__form grid grid-cols-1 grid-rows-1 items-center justify-items-center z-10 select-none" v-show="formBegin">
+            <div class="questionnaire__form__field flex flex-col items-start caret-slate-800 dark:caret-white justify-center h-screen px-10 w-full md:max-w-screen-md row-start-1 col-start-1 gap-5"
                  :class="animationClass(index)"
                  v-for="(field, index) in data.fields">
-                <label class="flex flex-col text-2xl text-slate-800 gap-5 w-full" :for="field.id">{{ field.label }}
-                    <input v-if="field.type === 'text'" :type="field.type" :id="field.id" placeholder="Type here..." v-model="field.value" class="questionnaire__form__field--input bg-white pb-2 border-b-2 capitalize"/>
-                    <input v-if="field.type === 'email'" :type="field.type" :id="field.id" placeholder="Type here..." v-model="field.value" class="questionnaire__form__field--email bg-white pb-2 border-b-2"/>
-                    <select v-if="field.type === 'select'" :id="field.id" v-model="field.value" class="questionnaire__form__field--select text-xl py-2 px-1 bg-slate-100 cursor-pointer">
-                        <option class="text-base" v-for="(option, index) in field.options" :disabled="index === 0" :value="option.value" v-text="option.label"></option>
+                <label class="flex flex-col text-2xl text-slate-800 dark:text-white gap-5 w-full" :for="field.id">{{ field.label }}
+                    <input v-if="field.type === 'text'"
+                           :type="field.type"
+                           :id="field.id"
+                           placeholder="Type here..."
+                           v-model="field.value"
+                           class="questionnaire__form__field--input bg-white pb-2 border-b-2 capitalize dark:bg-transparent"/>
+                    <input v-if="field.type === 'email'"
+                           :type="field.type"
+                           :id="field.id"
+                           placeholder="Type here..."
+                           v-model="field.value"
+                           class="questionnaire__form__field--email bg-white pb-2 border-b-2 dark:bg-transparent"/>
+                    <textarea v-if="field.type === 'textarea'"
+                              :id="field.id"
+                              placeholder="Type here..."
+                              v-model="field.value"
+                              class="questionnaire__form__field--email bg-white h-14 pb-2 border-b-2 dark:bg-transparent"/>
+                    <select v-if="field.type === 'select'"
+                            :id="field.id"
+                            v-model="field.value"
+                            class="questionnaire__form__field--select text-xl py-2 px-1 bg-slate-100 cursor-pointer dark:text-slate-800 dark:bg-slate-200">
+                        <option class="text-base"
+                                v-for="(option, index) in field.options"
+                                :disabled="index === 0"
+                                :value="option.value"
+                                v-text="option.label"></option>
                     </select>
-                    <span v-if="field.type === 'radio'" class="questionnaire__form__field--radio flex flex-row justify-start items-start py-5">
-                        <label v-for="option in field.options" :for="option" class="text-base w-1/6 flex flex-row items-center justify-start cursor-pointer gap-2">{{ option }}
-                            <input class="hidden pointer-events-none" :value="option" v-model="field.value" :name="field.id" :type="field.type" :id="option"/>
-                            <span class="questionnaire__form__field--radio__checkmark rounded-full bg-slate-200 h-5 w-5"></span>
+                    <span v-if="field.type === 'radio'" class="questionnaire__form__field--radio flex flex-row justify-start items-start gap-10 py-5">
+                        <label v-for="option in field.options" :for="field.id + option" class="text-base flex flex-row items-center justify-start cursor-pointer gap-2">{{ option }}
+                            <input class="hidden pointer-events-none"
+                                   :value="option"
+                                   v-model="field.value"
+                                   :name="field.id"
+                                   :type="field.type"
+                                   :id="field.id + option"/>
+                            <span class="questionnaire__form__field--radio__checkmark rounded-full bg-slate-200 dark:bg-slate-100 h-5 w-5"></span>
                         </label>
                     </span>
-                    <input v-if="field.type === 'checkbox'" :type="field.type" :id="field.id" v-model="field.value" class="questionnaire__form__field--checkbox bg-white border-b-2"/>
+                    <span v-if="field.type === 'checkbox'" class="questionnaire__form__field--radio flex flex-row justify-start items-start gap-10 py-5">
+                        <label v-for="option in field.options" :for="field.id + option.label" class="text-base flex flex-row items-center justify-start cursor-pointer gap-2">{{ option.label }}
+                            <input class="hidden pointer-events-none"
+                                   :value="option.label"
+                                   v-model="option.selected"
+                                   :name="field.id + option.value"
+                                   :type="field.type"
+                                   :id="field.id + option.label"/>
+                            <span class="questionnaire__form__field--radio__checkmark rounded-full bg-slate-200 dark:bg-slate-100 h-5 w-5"></span>
+                        </label>
+                    </span>
                     <VueDatePicker class="questionnaire__datepicker"
                                    v-if="field.type === 'datepicker'"
                                    v-model="field.value"
@@ -46,19 +92,19 @@
                 <div class="flex flex-row items-center gap-2">
                     <div v-if="index !== data.fields.length - 1" class="questionnaire__form__field__next-btn btn-secondary" @click="nextField">Next</div>
                     <div v-else class="questionnaire__form__field__next-btn btn-secondary" @click="submit">Submit</div>
-                    <div v-if="index !== data.fields.length - 1" class="text-slate-800 text-xs">press <strong>Enter ↵</strong></div>
+                    <div v-if="index !== data.fields.length - 1" class="text-slate-800 dark:text-white text-xs">press <strong>Enter ↵</strong></div>
                 </div>
             </div>
         </form>
-        <div class="questionnaire__nav-arrows fixed bottom-10 md:bottom-auto md:top-2/4 left-8 text-4xl" v-show="formBegin">
-            <div class="questionnaire__nav-arrows__arrow cursor-pointer hover:bg-slate-200 px-1 rounded" @click="prevField">
-                <i class="fas fa-chevron-up text-slate-800"></i>
+        <div class="questionnaire__nav-arrows fixed bottom-10 lg:bottom-auto lg:top-2/4 left-8 text-4xl" v-show="formBegin">
+            <div class="questionnaire__nav-arrows__arrow cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-600 px-1 rounded" @click="prevField">
+                <i class="fas fa-chevron-up text-slate-800 dark:text-white"></i>
             </div>
-            <div class="questionnaire__nav-arrows__arrow cursor-pointer hover:bg-slate-200 px-1 rounded" @click="nextField">
-                <i class="fas fa-chevron-down text-slate-800"></i>
+            <div class="questionnaire__nav-arrows__arrow cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-600 px-1 rounded" @click="nextField">
+                <i class="fas fa-chevron-down text-slate-800 dark:text-white"></i>
             </div>
         </div>
-        <div class="questionnaire__footer h-6 text-white text-sm flex items-center justify-end pr-2 bg-slate-800 fixed bottom-0 left-0 right-0">Donut Media &copy; 2024
+        <div class="questionnaire__footer h-6 text-white text-sm flex items-center justify-end pr-2 bg-slate-800 dark:bg-slate-900 fixed bottom-0 left-0 right-0">Donut Media &copy; 2024
         </div>
     </div>
 </template>
@@ -86,6 +132,11 @@ export default {
                     this.nextField();
                 }
             }
+
+            // if tab is pressed, prevent default
+            if (e.key === 'Tab') {
+                e.preventDefault();
+            }
         });
     },
     data() {
@@ -97,7 +148,8 @@ export default {
             scrollDirection: '',
             formScrollInitiated: false,
             scrollAnimationComplete: true,
-            datePickerOpen: false
+            datePickerOpen: false,
+            darkMode: false
         }
     },
     methods: {
@@ -166,6 +218,11 @@ export default {
         currentField(newVal, oldVal) {
             if (newVal !== oldVal) {
                 this.focusCurrentField();
+            }
+        },
+        darkMode(newVal, oldVal) {
+            if (newVal !== oldVal) {
+                document.querySelector('html').classList.toggle('dark');
             }
         }
     }

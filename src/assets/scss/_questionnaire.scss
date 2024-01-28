@@ -1,5 +1,29 @@
 html, body {
     overflow: hidden;
+
+    * {
+        @apply transition-colors duration-200;
+    }
+}
+
+.dark-mode-slide-toggle {
+    .toggle-bg {
+        &::before {
+            content: '';
+            position: absolute;
+            transition: all .5s;
+            left: 1.875rem;
+            @apply text-amber-400 bg-gray-100 shadow h-6 w-6 flex items-center justify-center rounded-full;
+        }
+
+        &.dark {
+            &::before {
+                content: '';
+                left: 2px;
+                @apply text-purple-900;
+            }
+        }
+    }
 }
 
 .questionnaire {
@@ -16,7 +40,7 @@ html, body {
     }
 
     .btn-secondary {
-        @apply bg-slate-800 hover:bg-slate-900;
+        @apply bg-slate-800 hover:bg-slate-900 dark:bg-slate-500 dark:hover:bg-slate-600;
     }
 
     &__header {
@@ -62,22 +86,22 @@ html, body {
 
             label {
 
-                input {
-                    @apply text-4xl;
-
+                input, select, textarea {
                     &:focus {
                         outline: none;
                     }
+                }
+
+                input {
+                    @apply text-4xl;
 
                     &:checked + span {
                         @apply bg-green-600;
                     }
                 }
 
-                select {
-                    &:focus {
-                        outline: none;
-                    }
+                textarea {
+                    @apply text-4xl;
                 }
             }
         }
