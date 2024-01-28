@@ -15,9 +15,10 @@ export default {
             clientData: {
                 name: 'Donut',
                 logo: 'https://donut.media/cdn/shop/files/DONM-0114_StoreRetheme_SiteExp_Logo-01_x300.png?v=1670446627',
+                background: 'https://donut.media/cdn/shop/files/jan_web_header.png?v=1705685702',
                 intro: {
                     title: 'Welcome to Donut!',
-                    text: 'Firstly, thank you for taking the time to fill out this questionnaire. Your answer here will help us to craft our future content to your liking. As you already know, we love everything involving cars, but what you may not know is how much we love our fans! Getting to know the people who have made our channel a success has been a great joy. Thank again for your time, we look forward to hearing from you!',
+                    text: 'Firstly, thank you for taking the time to fill out this questionnaire. Your answers here will help us to craft our future content to your liking. As you already know, we love everything involving cars, but what you may not know is how much we love our fans! Getting to know the people who have made our channel a success has been a great joy. Thank you again for your time, we look forward to hearing from you!',
                     ctaText: 'Start'
                 },
                 fields: [
@@ -34,7 +35,7 @@ export default {
                     {
                         label: 'Email',
                         id: 'email',
-                        type: 'text'
+                        type: 'email'
                     },
                     {
                         label: 'What is your favorite color?',
@@ -92,6 +93,32 @@ export default {
                         }
                       ]
                     },
+                    {
+                        label: 'Do you enjoy clicking on buttons?',
+                        id: 'buttonPreference',
+                        type: 'checkbox',
+                    },
+                    {
+                        label: 'What is your birthday?',
+                        id: 'birthday',
+                        type: 'datepicker',
+                    },
+                    {
+                        label: 'What is your favorite car?',
+                        id: 'favoriteCar',
+                        type: 'text'
+                    },
+                    {
+                        label: 'How often to you watch Donut?',
+                        id: 'watchFrequency',
+                        type: 'radio',
+                    },
+                    {
+                        label: 'Did you know that Donut has a store?',
+                        id: 'storeKnowledge',
+                        type: 'radio',
+                    }
+
                 ],
                 primaryColor: '#fcd510',
                 secondaryColor: '#42b35a'

@@ -3,6 +3,23 @@ html, body {
 }
 
 .questionnaire {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    .btn-primary, .btn-secondary {
+        @apply w-fit text-base text-white font-bold py-2 px-4 uppercase rounded cursor-pointer;
+    }
+
+    .btn-primary {
+        @apply bg-green-500 hover:bg-green-600;
+    }
+
+    .btn-secondary {
+        @apply bg-slate-800 hover:bg-slate-900;
+    }
+
+
     &__header {
         width: 100%;
         height: 5rem;
@@ -15,7 +32,26 @@ html, body {
         z-index: 100;
     }
 
+    &__progress {
+        &__bar {
+            transition: width 0.5s;
+        }
+    }
+
     &__intro {
+
+        &__transition-enter-active, &__transition-leave-active {
+            transition: opacity 0.5s;
+        }
+
+        &__transition-enter, &__transition-leave-to {
+            opacity: 0;
+        }
+
+        &__image {
+            filter: brightness(0.5);
+        }
+
         &__text {
             max-width: 60rem;
         }
@@ -24,12 +60,15 @@ html, body {
     &__form {
 
         &__field {
-            height: 100vh;
-            width: 100vw;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            //@apply h-screen w-screen flex items-center justify-center;
+            //max-width: 40vw;
+
+            label {
+                @apply w-full;
+
+                input, select {
+                    @apply text-4xl;
+                }
+            }
 
             input {
                 &:focus {
