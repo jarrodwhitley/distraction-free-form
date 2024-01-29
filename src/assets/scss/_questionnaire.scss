@@ -103,9 +103,16 @@ html, body {
                 }
 
                 input {
-
                     &:checked + span {
                         @apply bg-green-600;
+                    }
+                }
+
+                .select-container {
+                    &::after {
+                        content: '\f0dc';
+                        font-family: 'Font Awesome 6 Free';
+                        @apply text-xl text-slate-800 absolute right-2 top-1.5 z-10;
                     }
                 }
             }

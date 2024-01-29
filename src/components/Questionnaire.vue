@@ -1,6 +1,6 @@
 <template>
     <div class="questionnaire overflow-hidden relative h-screen dark:bg-slate-800" v-if="data">
-        <div class="questionnaire__header flex flex-col items-center justify-center z-20 fixed top-0 left-0 w-full h-10 md:h-20" :style="'background-color:' + data.primaryColor">
+        <div class="questionnaire__header flex flex-col items-center justify-center z-20 fixed top-0 left-0 w-full h-10 lm:h-16 md:h-20" :style="'background-color:' + data.primaryColor">
             <img class="questionnaire__header__logo h-full w-auto" :src="data.logo" alt="client logo"/>
             <div class="dark-mode-slide-toggle absolute right-2">
                 <label for="darkmode">
@@ -21,9 +21,9 @@
         <Transition name="questionnaire__intro__transition" tag="div">
             <div class="questionnaire__intro h-auto md:h-screen w-auto flex flex-col md:grid grid-rows-2 md:grid-rows-1 grid-cols-2 justify-center items-center mt-20 md:mt-auto z-10 gap-5" v-show="!formBegin">
                 <img class="questionnaire__intro__image hidden md:block z-0 object-cover pointer-events-none h-1/4 md:h-full row-start-1 col-span-full md:col-span-1 md:col-start-1" :src="data.background" alt="client background"/>
-                <div class="flex flex-col w-full px-10 md:pl-10 md:pr-28 gap-10 row-start-2 md:row-start-1 col-span-full md:col-span-1 md:col-start-2">
-                    <h1 class="questionnaire__intro__title text-4xl md:text-6xl font-bold dark:text-white" v-text="data.intro.title"></h1>
-                    <p class="questionnaire__intro__text leading-7 dark:text-white" v-text="data.intro.text"></p>
+                <div class="flex flex-col w-full px-10 md:pl-10 md:pr-28 gap-5 lm:gap-10 row-start-2 md:row-start-1 col-span-full md:col-span-1 md:col-start-2">
+                    <h1 class="questionnaire__intro__title text-3xl lm:text-4xl md:text-6xl font-bold dark:text-white" v-text="data.intro.title"></h1>
+                    <p class="questionnaire__intro__text lm:leading-7 dark:text-white" v-text="data.intro.text"></p>
                     <div class="flex flex-row items-center w-fit mx-auto md:mx-px gap-2">
                         <button class="questionnaire__intro__cta btn-primary justify-self-center" v-text="data.intro.ctaText" @click="launchForm"></button>
                         <div class="text-slate-800 dark:text-white text-xs hidden md:block">press <strong>Enter ↵</strong></div>
@@ -32,7 +32,7 @@
             </div>
         </Transition>
         <form class="questionnaire__form grid grid-cols-1 grid-rows-1 items-center justify-items-center z-10 select-none" v-show="formBegin">
-            <div class="questionnaire__form__field flex flex-col items-start caret-slate-800 dark:caret-white mt-20 md:mt-auto justify-start md:justify-center h-screen px-10 w-full md:max-w-screen-md row-start-1 col-start-1 gap-5"
+            <div class="questionnaire__form__field flex flex-col items-start caret-slate-800 dark:caret-white mt-20 lm:mt-28 md:mt-auto justify-start md:justify-center h-screen px-10 w-full md:max-w-screen-md row-start-1 col-start-1 gap-5"
                  :class="animationClass(index)"
                  v-for="(field, index) in data.fields">
                 <label class="flex flex-col text-2xl text-slate-800 dark:text-white gap-5 w-full" :for="field.id">{{ field.label }}
@@ -53,16 +53,17 @@
                               placeholder="Type here..."
                               v-model="field.value"
                               class="questionnaire__form__field--email bg-white h-14 pb-2 border-b-2 dark:bg-transparent"/>
-                    <select v-if="field.type === 'select'"
-                            :id="field.id"
-                            v-model="field.value"
-                            class="questionnaire__form__field--select text-xl py-2 px-1 bg-slate-100 cursor-pointer dark:text-slate-800 dark:bg-slate-200">
-                        <option class="text-base"
-                                v-for="(option, index) in field.options"
-                                :disabled="index === 0"
-                                :value="option.value"
-                                v-text="option.label"></option>
-                    </select>
+                    <div class="select-container w-full relative" v-if="field.type === 'select'">
+                        <select :id="field.id"
+                                v-model="field.value"
+                                class="questionnaire__form__field--select text-xl w-full py-2 pl-1 pr-10 appearance-none bg-slate-100 cursor-pointer dark:text-slate-800 dark:bg-slate-200">
+                            <option class="text-base"
+                                    v-for="(option, index) in field.options"
+                                    :disabled="index === 0"
+                                    :value="option.value"
+                                    v-text="option.label"></option>
+                        </select>
+                    </div>
                     <span v-if="field.type === 'radio'" class="questionnaire__form__field--radio flex flex-col md:flex-row justify-start items-start gap-10 py-5">
                         <label v-for="option in field.options" :for="field.id + option" class="text-base flex flex-row-reverse items-center justify-start cursor-pointer gap-2">{{ option }}
                             <input class="hidden pointer-events-none"
