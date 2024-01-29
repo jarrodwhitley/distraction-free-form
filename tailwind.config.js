@@ -1,5 +1,7 @@
 /** @type {import('tailwindcss').Config} */
-export default {
+const plugin = require('tailwindcss/plugin')
+
+module.exports = {
     darkMode: 'class',
     content: [
         "./src/components/*.{js,jsx,ts,tsx,vue}",
@@ -11,6 +13,10 @@ export default {
             },
         },
     },
-    plugins: [],
+    plugins: [
+        plugin(function({ addVariant }) {
+            addVariant('review', '.review-mode &')
+        })
+    ],
 }
 

@@ -19,9 +19,9 @@
             <svg class="h-24 w-24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Pro 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2024 Fonticons, Inc.--><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm32-256a32 32 0 1 0 -64 0 32 32 0 1 0 64 0zm-16.1 62l0 65c44.3-5.5 81.5-33.6 99.8-72.4l-61.9-20.1c-8.6 13.5-22.1 23.5-38 27.6zm47.9-58l61.8 20.1c1.5-7.8 2.3-15.9 2.3-24.2c0-36.8-15.5-69.9-40.3-93.3l-38.2 52.6c9.1 11 14.5 25.2 14.5 40.6c0 1.4 0 2.7-.1 4zm-40.2-63.5l38.2-52.6C299.5 133.8 278.4 128 256 128s-43.5 5.8-61.8 15.9l28.1 38.8 10 13.8c7.3-2.9 15.3-4.5 23.6-4.5s16.3 1.6 23.6 4.5zM168.3 162.7C143.5 186.1 128 219.2 128 256c0 8.3 .8 16.3 2.3 24.2L192.1 260c-.1-1.3-.1-2.7-.1-4c0-15.4 5.5-29.6 14.5-40.6l-10.1-13.9-28.1-38.7zm33.7 127.7l-61.9 20.1c18.3 38.8 55.5 66.9 99.8 72.4l0-65c-15.8-4.1-29.3-14.1-37.9-27.5zM256 96a160 160 0 1 1 0 320 160 160 0 1 1 0-320z"/></svg>
         </div>
         <Transition name="questionnaire__intro__transition" tag="div">
-            <div class="questionnaire__intro h-auto md:h-screen w-auto flex flex-col md:grid grid-rows-2 md:grid-rows-1 grid-cols-2 justify-center items-center mt-20 md:mt-auto z-10 gap-5" v-show="!formBegin">
+            <div class="questionnaire__intro h-auto md:h-screen w-auto flex flex-col md:grid grid-rows-2 md:grid-rows-1 grid-cols-2 justify-center items-center mt-20 lm:mt-28 md:mt-auto z-10 gap-5" v-show="!formBegin">
                 <img class="questionnaire__intro__image hidden md:block z-0 object-cover pointer-events-none h-1/4 md:h-full row-start-1 col-span-full md:col-span-1 md:col-start-1" :src="data.background" alt="client background"/>
-                <div class="flex flex-col w-full px-10 md:pl-10 md:pr-28 gap-5 lm:gap-10 row-start-2 md:row-start-1 col-span-full md:col-span-1 md:col-start-2">
+                <div class="flex flex-col w-full px-10 md:pl-10 md:pr-28 gap-5 lm:gap-8 md:gap-10 row-start-2 md:row-start-1 col-span-full md:col-span-1 md:col-start-2">
                     <h1 class="questionnaire__intro__title text-3xl lm:text-4xl md:text-6xl font-bold dark:text-white" v-text="data.intro.title"></h1>
                     <p class="questionnaire__intro__text lm:leading-7 dark:text-white" v-text="data.intro.text"></p>
                     <div class="flex flex-row items-center w-fit mx-auto md:mx-px gap-2">
@@ -31,23 +31,26 @@
                 </div>
             </div>
         </Transition>
-        <form class="questionnaire__form grid grid-cols-1 grid-rows-1 items-center justify-items-center z-10 select-none" v-show="formBegin">
-            <div class="questionnaire__form__field flex flex-col items-start caret-slate-800 dark:caret-white mt-20 lm:mt-28 md:mt-auto justify-start md:justify-center h-screen px-10 w-full md:max-w-screen-md row-start-1 col-start-1 gap-5"
+        <form v-show="formBegin"
+              class="questionnaire__form grid grid-cols-1 grid-rows-1 items-center justify-items-center z-10 select-none"
+              :class="{ 'review-mode' : reviewMode }">
+            <div class="questionnaire__form__field flex flex-col items-start caret-slate-800 dark:caret-white mt-20 lm:mt-28 md:mt-auto justify-start md:justify-center px-10 h-screen review:h-fit w-full md:max-w-screen-md row-start-1 col-start-1 gap-5"
                  :class="animationClass(index)"
                  v-for="(field, index) in data.fields">
-                <label class="flex flex-col text-2xl text-slate-800 dark:text-white gap-5 w-full" :for="field.id">{{ field.label }}
+                <label class="flex flex-col text-2xl text-slate-800 dark:text-white gap-5 w-full relative" :for="field.id">
+                    {{ field.label }}
                     <input v-if="field.type === 'text'"
                            :type="field.type"
                            :id="field.id"
                            placeholder="Type here..."
                            v-model="field.value"
-                           class="questionnaire__form__field--input bg-white pb-2 border-b-2 capitalize dark:bg-transparent"/>
+                           class="questionnaire__form__field--input bg-transparent pb-2 border-b-2 capitalize dark:bg-transparent"/>
                     <input v-if="field.type === 'email'"
                            :type="field.type"
                            :id="field.id"
                            placeholder="Type here..."
                            v-model="field.value"
-                           class="questionnaire__form__field--email bg-white pb-2 border-b-2 dark:bg-transparent"/>
+                           class="questionnaire__form__field--email bg-transparent pb-2 border-b-2 dark:bg-transparent"/>
                     <textarea v-if="field.type === 'textarea'"
                               :id="field.id"
                               placeholder="Type here..."
@@ -94,8 +97,8 @@
                                    :enable-time-picker="false"></VueDatePicker>
                 </label>
                 <div class="flex flex-row items-center gap-2">
-                    <div v-if="index !== data.fields.length - 1" class="questionnaire__form__field__next-btn btn-secondary" @click="nextField">Next</div>
-                    <div v-else class="questionnaire__form__field__next-btn btn-secondary" @click="submit">Submit</div>
+                    <div v-if="index !== data.fields.length - 1" class="questionnaire__form__field__next-btn btn-secondary review:hidden" @click="nextField">Next</div>
+                    <div v-else class="questionnaire__form__field__next-btn btn-secondary" @click="toggleReviewMode">Review</div>
                     <div v-if="index !== data.fields.length - 1" class="text-slate-800 dark:text-white text-xs hidden md:block">press <strong>Enter ↵</strong></div>
                 </div>
             </div>
@@ -123,14 +126,15 @@ export default {
         return {
             data: null,
             currentField: 0,
-            formBegin: false,
+            formBegin: true,
             userInteraction: false,
             scrollDirection: '',
             formScrollInitiated: false,
             scrollAnimationComplete: true,
             datePickerOpen: false,
             darkMode: false,
-            loading: true
+            loading: true,
+            reviewMode: true
         }
     },
     mounted() {
@@ -194,6 +198,8 @@ export default {
         animationClass(index) {
             let classes = [];
 
+            if (this.reviewMode) return false;
+
             if (!this.formScrollInitiated && index === 0) {
                 classes.push('animate__animated animate__fadeInUp');
             } else if (!this.formScrollInitiated && index > 0) {
@@ -233,6 +239,9 @@ export default {
                 field.value = storedData[field.id];
                 return field;
             });
+        },
+        toggleReviewMode() {
+            this.reviewMode = !this.reviewMode;
         },
         submit() {
             alert('Form submitted!');

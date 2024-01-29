@@ -88,6 +88,12 @@ html, body {
 
     &__form {
 
+        &.review-mode {
+            &__field  {
+
+            }
+        }
+
         &__field {
 
             label {
