@@ -105,29 +105,7 @@ export default {
                     {
                         label: 'What vehicles do you own?',
                         id: 'vehicles',
-                        type: 'checkbox',
-                        options: [
-                            {
-                                label: 'Car',
-                                value: 'car',
-                                selected: false
-                            },
-                            {
-                                label: 'Truck',
-                                value: 'truck',
-                                selected: false
-                            },
-                            {
-                                label: 'Van',
-                                value: 'van',
-                                selected: false
-                            },
-                            {
-                                label: 'Motorcycle',
-                                value: 'motorcycle',
-                                selected: false
-                            },
-                        ],
+                        type: 'text',
                         value: '',
                         required: false
                     },
@@ -354,35 +332,8 @@ export default {
                     {
                         label: 'What types of racing do you watch?',
                         id: 'racingTypes',
-                        type: 'checkbox',
+                        type: 'text',
                         value: '',
-                        options: [
-                            {
-                                label: 'NASCAR',
-                                value: 'nascar',
-                                selected: false
-                            },
-                            {
-                                label: 'Formula 1',
-                                value: 'f1',
-                                selected: false
-                            },
-                            {
-                                label: 'Drag Racing',
-                                value: 'drag',
-                                selected: false
-                            },
-                            {
-                                label: 'Drifting',
-                                value: 'drift',
-                                selected: false
-                            },
-                            {
-                                label: 'Rally',
-                                value: 'rally',
-                                selected: false
-                            },
-                        ],
                         required: false
                     },
                     {

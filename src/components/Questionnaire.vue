@@ -1,11 +1,11 @@
 <template>
-    <div class="questionnaire overflow-hidden relative dark:bg-slate-800">
+    <div class="questionnaire overflow-hidden relative dark:bg-slate-800" v-if="data">
         <div class="questionnaire__header flex flex-col items-center justify-center z-20 fixed top-0 left-0 w-full h-10 md:h-20" :style="'background-color:' + data.primaryColor">
             <img class="questionnaire__header__logo h-full w-auto" :src="data.logo" alt="client logo"/>
-            <div class="dark-mode-slide-toggle absolute right-2 cursor-pointer">
+            <div class="dark-mode-slide-toggle absolute right-2">
                 <label for="darkmode">
                     <input type="checkbox" id="darkmode" v-model="darkMode" class="hidden"/>
-                    <div class="toggle-bg flex justify-evenly items-center bg-gray-600 rounded-2xl w-14 h-7 relative" :class="{ 'dark' : darkMode }">
+                    <div class="toggle-bg flex justify-evenly items-center bg-gray-600 rounded-2xl w-14 h-7 cursor-pointer relative" :class="{ 'dark' : darkMode }">
                         <i class="fas fa-sun text-gray-400"></i>
                         <i class="fas fa-moon text-gray-400"></i>
                     </div>
@@ -115,7 +115,22 @@ export default {
     props: {
         clientData: Array
     },
+    data() {
+        return {
+            data: null,
+            currentField: 0,
+            formBegin: false,
+            userInteraction: false,
+            scrollDirection: '',
+            formScrollInitiated: false,
+            scrollAnimationComplete: true,
+            datePickerOpen: false,
+            darkMode: false
+        }
+    },
     mounted() {
+        this.data = this.clientData;
+        this.getLocalStorage();
         window.addEventListener('wheel', (e) => {
             if (this.datePickerOpen) return false;
             if (this.scrollAnimationComplete && this.formBegin && e.deltaY > 0) {
@@ -124,7 +139,6 @@ export default {
                 this.prevField();
             }
         });
-
         window.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
                 if (!this.formBegin) {
@@ -139,19 +153,6 @@ export default {
                 e.preventDefault();
             }
         });
-    },
-    data() {
-        return {
-            data: this.clientData,
-            currentField: 0,
-            formBegin: false,
-            userInteraction: false,
-            scrollDirection: '',
-            formScrollInitiated: false,
-            scrollAnimationComplete: true,
-            datePickerOpen: false,
-            darkMode: false
-        }
     },
     methods: {
         scrollAnimationHandler() {
@@ -211,8 +212,41 @@ export default {
                 currentField.focus();
             }, 1000);
         },
+        setLocalStorage() {
+            localStorage.setItem('formData', JSON.stringify(this.formData));
+        },
+        getLocalStorage() {
+            let storedData = JSON.parse(localStorage.getItem('formData'));
+            console.log('get local storage', storedData);
+            this.assignStoredData(storedData);
+        },
+        assignStoredData(storedData) {
+            if (storedData == null) return false;
+            this.data.fields = this.data.fields.map(field => {
+                field.value = storedData[field.id];
+                return field;
+            });
+        },
         submit() {
             alert('Form submitted!');
+        }
+    },
+    computed: {
+        formData: {
+            get() {
+                if (this.data == null) return false;
+                return this.data.fields.reduce((acc, field) => {
+                    acc[field.id] = field.value;
+                    return acc;
+                }, {});
+            },
+            set(formData) {
+                if (this.data == null) return false;
+                this.data.fields = this.data.fields.map(field => {
+                    field.value = formData[field.id];
+                    return field;
+                });
+            }
         }
     },
     watch: {
@@ -225,6 +259,12 @@ export default {
             if (newVal !== oldVal) {
                 document.querySelector('html').classList.toggle('dark');
             }
+        },
+        formData: {
+            handler(newVal, oldVal) {
+                this.setLocalStorage();
+            },
+            deep: true
         }
     }
 }
