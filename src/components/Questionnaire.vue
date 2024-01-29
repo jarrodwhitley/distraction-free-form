@@ -1,5 +1,5 @@
 <template>
-    <div class="questionnaire overflow-hidden relative dark:bg-slate-800" v-if="data">
+    <div class="questionnaire overflow-hidden relative h-screen dark:bg-slate-800" v-if="data">
         <div class="questionnaire__header flex flex-col items-center justify-center z-20 fixed top-0 left-0 w-full h-10 md:h-20" :style="'background-color:' + data.primaryColor">
             <img class="questionnaire__header__logo h-full w-auto" :src="data.logo" alt="client logo"/>
             <div class="dark-mode-slide-toggle absolute right-2">
@@ -224,7 +224,6 @@ export default {
         },
         getLocalStorage() {
             let storedData = JSON.parse(localStorage.getItem('formData'));
-            console.log('get local storage', storedData);
             this.assignStoredData(storedData);
         },
         assignStoredData(storedData) {

@@ -98,16 +98,15 @@ html, body {
                     }
                 }
 
-                input {
+                input, textarea {
                     @apply text-2xl md:text-4xl;
+                }
+
+                input {
 
                     &:checked + span {
                         @apply bg-green-600;
                     }
-                }
-
-                textarea {
-                    @apply text-4xl;
                 }
             }
         }
