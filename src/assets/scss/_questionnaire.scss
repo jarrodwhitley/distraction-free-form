@@ -36,7 +36,7 @@ html, body {
     }
 
     .btn-primary {
-        @apply bg-green-500 hover:bg-green-600;
+        @apply bg-green-600 hover:bg-green-700;
     }
 
     .btn-secondary {
@@ -88,12 +88,6 @@ html, body {
 
     &__form {
 
-        &.review-mode {
-            &__field  {
-
-            }
-        }
-
         &__field {
 
             label {
@@ -105,7 +99,7 @@ html, body {
                 }
 
                 input, textarea {
-                    @apply text-2xl md:text-4xl;
+                    @apply text-2xl md:text-4xl review:text-base;
                 }
 
                 input {

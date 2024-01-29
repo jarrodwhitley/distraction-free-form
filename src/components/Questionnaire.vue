@@ -1,6 +1,6 @@
 <template>
-    <div class="questionnaire overflow-hidden relative h-screen dark:bg-slate-800" v-if="data">
-        <div class="questionnaire__header flex flex-col items-center justify-center z-20 fixed top-0 left-0 w-full h-10 lm:h-16 md:h-20" :style="'background-color:' + data.primaryColor">
+    <div class="questionnaire overflow-hidden relative h-screen dark:bg-slate-800" :class="{ 'review-mode' : reviewMode }" v-if="data">
+        <div class="questionnaire__header flex flex-col items-center justify-center z-30 fixed top-0 left-0 w-full h-10 lm:h-16 md:h-20" :style="'background-color:' + data.primaryColor">
             <img class="questionnaire__header__logo h-full w-auto" :src="data.logo" alt="client logo"/>
             <div class="dark-mode-slide-toggle absolute right-2">
                 <label for="darkmode">
@@ -11,11 +11,11 @@
                     </div>
                 </label>
             </div>
-            <div class="questionnaire__progress w-screen bg-slate-100" :class="{ 'opacity-0' : !formBegin }">
+            <div class="questionnaire__progress w-screen bg-slate-100" :class="{ 'opacity-0' : !formBegin || reviewMode }">
                 <div class="questionnaire__progress__bar h-1 bg-slate-800 dark:bg-green-400" :style="'width:' + ((currentField + 1) / data.fields.length) * 100 + '%'"></div>
             </div>
         </div>
-        <div class="questionnaire__loading-overlay flex flex-col items-center justify-center z-10 fixed top-0 left-0 w-full h-screen bg-white" :class="{ 'show-overlay' : loading }">
+        <div class="questionnaire__loading-overlay flex flex-col items-center justify-center z-20 fixed top-0 left-0 w-full h-screen bg-white" :class="{ 'show-overlay' : loading }">
             <svg class="h-24 w-24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Pro 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2024 Fonticons, Inc.--><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm32-256a32 32 0 1 0 -64 0 32 32 0 1 0 64 0zm-16.1 62l0 65c44.3-5.5 81.5-33.6 99.8-72.4l-61.9-20.1c-8.6 13.5-22.1 23.5-38 27.6zm47.9-58l61.8 20.1c1.5-7.8 2.3-15.9 2.3-24.2c0-36.8-15.5-69.9-40.3-93.3l-38.2 52.6c9.1 11 14.5 25.2 14.5 40.6c0 1.4 0 2.7-.1 4zm-40.2-63.5l38.2-52.6C299.5 133.8 278.4 128 256 128s-43.5 5.8-61.8 15.9l28.1 38.8 10 13.8c7.3-2.9 15.3-4.5 23.6-4.5s16.3 1.6 23.6 4.5zM168.3 162.7C143.5 186.1 128 219.2 128 256c0 8.3 .8 16.3 2.3 24.2L192.1 260c-.1-1.3-.1-2.7-.1-4c0-15.4 5.5-29.6 14.5-40.6l-10.1-13.9-28.1-38.7zm33.7 127.7l-61.9 20.1c18.3 38.8 55.5 66.9 99.8 72.4l0-65c-15.8-4.1-29.3-14.1-37.9-27.5zM256 96a160 160 0 1 1 0 320 160 160 0 1 1 0-320z"/></svg>
         </div>
         <Transition name="questionnaire__intro__transition" tag="div">
@@ -31,35 +31,34 @@
                 </div>
             </div>
         </Transition>
-        <form v-show="formBegin"
-              class="questionnaire__form grid grid-cols-1 grid-rows-1 items-center justify-items-center z-10 select-none"
-              :class="{ 'review-mode' : reviewMode }">
-            <div class="questionnaire__form__field flex flex-col items-start caret-slate-800 dark:caret-white mt-20 lm:mt-28 md:mt-auto justify-start md:justify-center px-10 h-screen review:h-fit w-full md:max-w-screen-md row-start-1 col-start-1 gap-5"
+        <form class="questionnaire__form grid review:flex review:flex-col grid-cols-1 grid-rows-1 items-center justify-items-center z-10 select-none review:py-24 review:h-full review:overflow-y-scroll" :class="{ 'animate__animated animate__fadeInUp' : reviewMode }" v-show="formBegin">
+            <div v-if="reviewMode" class="font-bold text-2xl text-slate-800 dark:text-white">Review</div>
+            <div class="questionnaire__form__field flex flex-col items-start caret-slate-800 dark:caret-white mt-20 lm:mt-28 md:mt-auto justify-start md:justify-center review:my-4 px-10 h-screen review:h-fit w-full md:max-w-screen-md row-start-1 col-start-1 gap-5"
                  :class="animationClass(index)"
                  v-for="(field, index) in data.fields">
-                <label class="flex flex-col text-2xl text-slate-800 dark:text-white gap-5 w-full relative" :for="field.id">
+                <label class="flex flex-col text-2xl review:text-base text-slate-800 dark:text-white gap-5 review:gap-0 w-full relative" :for="field.id">
                     {{ field.label }}
                     <input v-if="field.type === 'text'"
                            :type="field.type"
                            :id="field.id"
                            placeholder="Type here..."
                            v-model="field.value"
-                           class="questionnaire__form__field--input bg-transparent pb-2 border-b-2 capitalize dark:bg-transparent"/>
+                           class="questionnaire__form__field--input bg-transparent pb-2 review:pb-0 border-b-2 capitalize dark:bg-transparent"/>
                     <input v-if="field.type === 'email'"
                            :type="field.type"
                            :id="field.id"
                            placeholder="Type here..."
                            v-model="field.value"
-                           class="questionnaire__form__field--email bg-transparent pb-2 border-b-2 dark:bg-transparent"/>
+                           class="questionnaire__form__field--email bg-transparent pb-2 review:pb-0 border-b-2 dark:bg-transparent"/>
                     <textarea v-if="field.type === 'textarea'"
                               :id="field.id"
                               placeholder="Type here..."
                               v-model="field.value"
-                              class="questionnaire__form__field--email bg-white h-14 pb-2 border-b-2 dark:bg-transparent"/>
+                              class="questionnaire__form__field--email bg-white h-14 lm:h-20 pb-2 border-b-2 bg-gray-100 dark:bg-transparent"/>
                     <div class="select-container w-full relative" v-if="field.type === 'select'">
                         <select :id="field.id"
                                 v-model="field.value"
-                                class="questionnaire__form__field--select text-xl w-full py-2 pl-1 pr-10 appearance-none bg-slate-100 cursor-pointer dark:text-slate-800 dark:bg-slate-200">
+                                class="questionnaire__form__field--select text-xl review:text-base w-full py-2 pl-1 pr-10 appearance-none bg-slate-100 cursor-pointer dark:text-slate-800 dark:bg-slate-200">
                             <option class="text-base"
                                     v-for="(option, index) in field.options"
                                     :disabled="index === 0"
@@ -67,7 +66,7 @@
                                     v-text="option.label"></option>
                         </select>
                     </div>
-                    <span v-if="field.type === 'radio'" class="questionnaire__form__field--radio flex flex-col md:flex-row justify-start items-start gap-10 py-5">
+                    <span v-if="field.type === 'radio'" class="questionnaire__form__field--radio flex flex-col md:flex-row justify-start items-start gap-10 review:gap-2 py-5 review:py-2">
                         <label v-for="option in field.options" :for="field.id + option" class="text-base flex flex-row-reverse items-center justify-start cursor-pointer gap-2">{{ option }}
                             <input class="hidden pointer-events-none"
                                    :value="option"
@@ -78,7 +77,7 @@
                             <span class="questionnaire__form__field--radio__checkmark rounded-full bg-slate-200 dark:bg-slate-100 h-5 w-5"></span>
                         </label>
                     </span>
-                    <span v-if="field.type === 'checkbox'" class="questionnaire__form__field--radio flex flex-col md:flex-row justify-start items-start gap-10 py-5">
+                    <span v-if="field.type === 'checkbox'" class="questionnaire__form__field--radio flex flex-col md:flex-row justify-start items-start gap-10 review:gap-2 py-5 review:py-2">
                         <label v-for="option in field.options" :for="field.id + option.label" class="text-base flex flex-row-reverse items-center justify-start cursor-pointer gap-2">{{ option.label }}
                             <input class="hidden pointer-events-none"
                                    :value="option.label"
@@ -96,14 +95,16 @@
                                    @closed="datePickerOpen = false"
                                    :enable-time-picker="false"></VueDatePicker>
                 </label>
-                <div class="flex flex-row items-center gap-2">
+                <div class="flex flex-row items-center gap-2 review:hidden">
                     <div v-if="index !== data.fields.length - 1" class="questionnaire__form__field__next-btn btn-secondary review:hidden" @click="nextField">Next</div>
                     <div v-else class="questionnaire__form__field__next-btn btn-secondary" @click="toggleReviewMode">Review</div>
                     <div v-if="index !== data.fields.length - 1" class="text-slate-800 dark:text-white text-xs hidden md:block">press <strong>Enter ↵</strong></div>
                 </div>
             </div>
+            <div v-if="reviewMode" class="btn-primary my-10" @click="submit">Submit</div>
         </form>
-        <div class="questionnaire__nav-arrows fixed bottom-10 lg:bottom-auto lg:top-2/4 right-8 text-4xl" v-show="formBegin">
+        <div class="questionnaire__nav-arrows fixed bottom-10 lg:bottom-auto lg:top-2/4 right-8 text-4xl"
+             v-show="formBegin && !reviewMode">
             <div class="questionnaire__nav-arrows__arrow cursor-pointer active:bg-slate-300 dark:active:bg-slate-600 hover:md:bg-slate-200 dark:hover:md:bg-slate-600 px-1 rounded" @click="prevField">
                 <i class="fas fa-chevron-up text-slate-800 dark:text-white"></i>
             </div>
@@ -126,7 +127,7 @@ export default {
         return {
             data: null,
             currentField: 0,
-            formBegin: true,
+            formBegin: false,
             userInteraction: false,
             scrollDirection: '',
             formScrollInitiated: false,
@@ -134,7 +135,7 @@ export default {
             datePickerOpen: false,
             darkMode: false,
             loading: true,
-            reviewMode: true
+            reviewMode: false
         }
     },
     mounted() {
@@ -145,7 +146,7 @@ export default {
         });
         window.addEventListener('wheel', (e) => {
             if (this.datePickerOpen) return false;
-            if (this.scrollAnimationComplete && this.formBegin && e.deltaY > 0) {
+            if (!this.reviewMode && this.scrollAnimationComplete && this.formBegin && e.deltaY > 0) {
                 this.nextField();
             } else {
                 this.prevField();
@@ -198,7 +199,7 @@ export default {
         animationClass(index) {
             let classes = [];
 
-            if (this.reviewMode) return false;
+            if (this.reviewMode || !this.formBegin) return false;
 
             if (!this.formScrollInitiated && index === 0) {
                 classes.push('animate__animated animate__fadeInUp');
@@ -245,6 +246,15 @@ export default {
         },
         submit() {
             alert('Form submitted!');
+            localStorage.removeItem('formData');
+            this.currentField = 0;
+            this.formBegin = false;
+            this.reviewMode = false;
+            this.data.fields = this.data.fields.map(field => {
+                field.value = '';
+                return field;
+            });
+            document.querySelector('.questionnaire__form').scrollTo(0, 0);
         }
     },
     computed: {

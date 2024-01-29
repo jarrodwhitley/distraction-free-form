@@ -1,21 +1,21 @@
 * {
     scroll-width: thin;
-    scrollbar-color: lightgray;
+    scrollbar-color: white;
 }
 
 *::-webkit-scrollbar {
-    width: 15px;
+    width: 10px;
 }
 
 *::-webkit-scrollbar-track {
-    background: lightgray;
+    background: #fafafa;
     border-radius: 0;
 }
 
 *::-webkit-scrollbar-thumb {
-    background-color: gray;
+    background-color: lightgray;
     border-radius: 14px;
-    border: 3px solid lightgray;
+    border: 3px solid #fafafa;
 }
 
 body {
