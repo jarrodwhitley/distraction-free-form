@@ -15,6 +15,9 @@
                 <div class="questionnaire__progress__bar h-1 bg-slate-800 dark:bg-green-400" :style="'width:' + ((currentField + 1) / data.fields.length) * 100 + '%'"></div>
             </div>
         </div>
+        <div class="questionnaire__loading-overlay flex flex-col items-center justify-center z-10 fixed top-0 left-0 w-full h-screen bg-white" :class="{ 'show-overlay' : loading }">
+            <svg class="h-24 w-24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Pro 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2024 Fonticons, Inc.--><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm32-256a32 32 0 1 0 -64 0 32 32 0 1 0 64 0zm-16.1 62l0 65c44.3-5.5 81.5-33.6 99.8-72.4l-61.9-20.1c-8.6 13.5-22.1 23.5-38 27.6zm47.9-58l61.8 20.1c1.5-7.8 2.3-15.9 2.3-24.2c0-36.8-15.5-69.9-40.3-93.3l-38.2 52.6c9.1 11 14.5 25.2 14.5 40.6c0 1.4 0 2.7-.1 4zm-40.2-63.5l38.2-52.6C299.5 133.8 278.4 128 256 128s-43.5 5.8-61.8 15.9l28.1 38.8 10 13.8c7.3-2.9 15.3-4.5 23.6-4.5s16.3 1.6 23.6 4.5zM168.3 162.7C143.5 186.1 128 219.2 128 256c0 8.3 .8 16.3 2.3 24.2L192.1 260c-.1-1.3-.1-2.7-.1-4c0-15.4 5.5-29.6 14.5-40.6l-10.1-13.9-28.1-38.7zm33.7 127.7l-61.9 20.1c18.3 38.8 55.5 66.9 99.8 72.4l0-65c-15.8-4.1-29.3-14.1-37.9-27.5zM256 96a160 160 0 1 1 0 320 160 160 0 1 1 0-320z"/></svg>
+        </div>
         <Transition name="questionnaire__intro__transition" tag="div">
             <div class="questionnaire__intro h-auto md:h-screen w-auto flex flex-col md:grid grid-rows-2 md:grid-rows-1 grid-cols-2 justify-center items-center mt-20 md:mt-auto z-10 gap-5" v-show="!formBegin">
                 <img class="questionnaire__intro__image hidden md:block z-0 object-cover pointer-events-none h-1/4 md:h-full row-start-1 col-span-full md:col-span-1 md:col-start-1" :src="data.background" alt="client background"/>
@@ -125,12 +128,16 @@ export default {
             formScrollInitiated: false,
             scrollAnimationComplete: true,
             datePickerOpen: false,
-            darkMode: false
+            darkMode: false,
+            loading: true
         }
     },
     mounted() {
         this.data = this.clientData;
         this.getLocalStorage();
+        window.addEventListener('load', () => {
+            this.loading = false;
+        });
         window.addEventListener('wheel', (e) => {
             if (this.datePickerOpen) return false;
             if (this.scrollAnimationComplete && this.formBegin && e.deltaY > 0) {
